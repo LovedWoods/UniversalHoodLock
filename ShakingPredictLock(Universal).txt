@@ -38,8 +38,10 @@ local function UpdateAllHitbox()
 				hb.Anchored = false
 				hb.Size = Vector3.new(4,4,4)
 				hb.Parent = v.Character
+				continue
 			else
 				v.Character:FindFirstChild("Hitbox").CFrame = v.Character:FindFirstChild("HumanoidRootPart").CFrame
+				continue
 			end
 		end
 	end
