@@ -45,7 +45,7 @@ local function UpdateAllHitbox()
 	end
 end
 
-Noti("Aimlock Loaded Version 0.7\nMade by lovedwoods on discord")
+Noti("Aimlock Loaded Version 1 😜\nMade by lovedwoods on discord")
 game:GetService("UserInputService").InputBegan:Connect(function(key,gpe)
 	if gpe then return end
 	if key.KeyCode == Enum.KeyCode[string.upper(Keybind)] then
