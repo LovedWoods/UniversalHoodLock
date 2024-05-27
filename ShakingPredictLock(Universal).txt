@@ -17,7 +17,7 @@ local Cooldown = false
 local TS = game:GetService("TweenService")
 local function Noti(Text)
 	local Sound = Instance.new("Sound")
-	Sound.SoundId = "rbxassetid://7383525713"
+	Sound.SoundId = "rbxassetid://8486683243"
 	Sound.Parent = game.Players.LocalPlayer.PlayerGui
 	Sound:Play()
 	game:GetService("StarterGui"):SetCore("SendNotification",{
@@ -25,6 +25,26 @@ local function Noti(Text)
 		Text = Text;
 	})
 end
+
+local function UpdateAllHitbox()
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if not v.Character:FindFirstChild("Hitbox") then
+			if v.Character ~= game.Players.LocalPlayer.Character then
+				local hb = Instance.new("Part")
+				hb.Name = "Hitbox"
+				hb.CFrame = v.Character:FindFirstChild("HumanoidRootPart").CFrame
+				hb.Transparency = 1
+				hb.CanCollide = false
+				hb.Anchored = false
+				hb.Size = Vector3.new(4,4,4)
+				hb.Parent = v.Character
+			else
+				v.Character:FindFirstChild("Hitbox").CFrame = v.Character:FindFirstChild("HumanoidRootPart").CFrame
+			end
+		end
+	end
+end
+
 Noti("Aimlock Loaded Version 0.7\nMade by lovedwoods on discord")
 game:GetService("UserInputService").InputBegan:Connect(function(key,gpe)
 	if gpe then return end
@@ -86,12 +106,14 @@ game:GetService("UserInputService").InputChanged:Connect(function(key,gpe)
 	end
 end)
 
-RS.RenderStepped:Connect(function(Delta)
+RS.RenderStepped:Connect(function(delta)
+	print("Updating Lock")
+	UpdateAllHitbox()
 	local YPredict = math.random(-2,2.5)
 	if Target ~= nil then
 		if Enabled == true then
 			local Humanoid = Target.Character.Humanoid
-			local random = math.random(1,4)
+			local random = math.random(1,1)
 			if random == 2 or random == 3 or random == 4 then
 				if Humanoid.MoveDirection.X > 0 then
 					Camera.CFrame = CFrame.new(Camera.CFrame.Position,(Target.Character.HumanoidRootPart.Position + Humanoid.MoveDirection)+Vector3.new((Predict*0.25)+0.5,0,0.2))
@@ -111,4 +133,4 @@ RS.RenderStepped:Connect(function(Delta)
 			end
 		end
 	end
-end) 
+end)
