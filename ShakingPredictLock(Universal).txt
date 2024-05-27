@@ -29,7 +29,7 @@ end
 local function UpdateAllHitbox()
 	for i,v in pairs(game.Players:GetPlayers()) do
 		if not v.Character:FindFirstChild("Hitbox") then
-			if v.Character ~= game.Players.LocalPlayer.Character then
+			if v.Character.Name ~= game.Players.LocalPlayer.Character.Name then
 				local hb = Instance.new("Part")
 				hb.Name = "Hitbox"
 				hb.CFrame = v.Character:FindFirstChild("HumanoidRootPart").CFrame
