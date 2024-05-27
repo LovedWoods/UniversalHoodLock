@@ -108,7 +108,6 @@ end)
 
 RS.RenderStepped:Connect(function(delta)
 	print("Updating Lock")
-	UpdateAllHitbox()
 	local YPredict = math.random(-2,2.5)
 	if Target ~= nil then
 		if Enabled == true then
@@ -133,4 +132,8 @@ RS.RenderStepped:Connect(function(delta)
 			end
 		end
 	end
+end)
+
+RS.RenderStepped:Connect(function(delta)
+UpdateAllHitbox()
 end)
