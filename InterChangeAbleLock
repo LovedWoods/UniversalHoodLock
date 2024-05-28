@@ -24,7 +24,7 @@ local function Noti(Text)
 		})
 	end
 end
-Noti("Woods Aimlock V0.32")
+Noti("Woods Aimlock V0.4")
 uis.InputBegan:Connect(function(key,gpe)
 	if gpe then return end
 	if key.KeyCode == Enum.KeyCode[string.upper(keybind)] then
@@ -32,7 +32,7 @@ uis.InputBegan:Connect(function(key,gpe)
 			for instancenumber,plr in pairs(game.Players:GetPlayers()) do
 				if plr.Name ~= player.Name then
 					if plr.Character then
-						if (plr.Character.HumanoidRootPart.Position-mouse.Hit.Position).Magnitude <= range then
+						if (plr.Character.HumanoidRootPart.Position-mouse.Hit.Position).Magnitude <= range and plr.Character:FindFirstChild("Humanoid").Health >= 5 then
 							target = plr.Character
 							Noti("Locked Onto "..plr.Name)
 							break
