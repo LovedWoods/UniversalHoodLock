@@ -2,7 +2,7 @@ local keybind = "t";
 local enablekey = "y";
 local range = 15;
 local NotiEnabled = true
-local Offset = tonumber(game.Players.LocalPlayer:GetNetworkPing()*200)*0.25;
+local Offset = tonumber(game.Players.LocalPlayer:GetNetworkPing()*100)*0.25;
 
 local uis = game:GetService("UserInputService")
 local player = game.Players.LocalPlayer
@@ -24,7 +24,7 @@ local function Noti(Text)
 		})
 	end
 end
-Noti("Woods Aimlock V0.4")
+Noti("Woods Aimlock V0.42")
 uis.InputBegan:Connect(function(key,gpe)
 	if gpe then return end
 	if key.KeyCode == Enum.KeyCode[string.upper(keybind)] then
