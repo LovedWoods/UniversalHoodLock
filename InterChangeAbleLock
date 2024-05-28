@@ -2,7 +2,7 @@ local keybind = "t";
 local enablekey = "y";
 local range = 15;
 local NotiEnabled = true
-local Offset = 0.4;
+local Offset = tonumber(game.Players.LocalPlayer:GetNetworkPing()*200)*0.25;
 
 local uis = game:GetService("UserInputService")
 local player = game.Players.LocalPlayer
