@@ -26,26 +26,7 @@ local function Noti(Text)
 	})
 end
 
-local function UpdateAllHitbox()
-	for i,v in pairs(game.Players:GetPlayers()) do
-		if not v.Character:FindFirstChild("Hitbox") then
-			if v.Character.Name ~= game.Players.LocalPlayer.Character.Name then
-				local hb = Instance.new("Part")
-				hb.Name = "Hitbox"
-				hb.CFrame = v.Character:FindFirstChild("HumanoidRootPart").CFrame
-				hb.Transparency = 1
-				hb.CanCollide = false
-				hb.Anchored = false
-				hb.Size = Vector3.new(4,4,4)
-				hb.Parent = v.Character
-			else
-				v.Character:FindFirstChild("Hitbox").CFrame = v.Character:FindFirstChild("HumanoidRootPart").CFrame
-			end
-		end
-	end
-end
-
-Noti("Aimlock Loaded Version 1 😜\nMade by lovedwoods on discord")
+Noti("Aimlock Loaded Version 1.15 😜\nMade by lovedwoods on discord")
 game:GetService("UserInputService").InputBegan:Connect(function(key,gpe)
 	if gpe then return end
 	if key.KeyCode == Enum.KeyCode[string.upper(Keybind)] then
@@ -132,8 +113,4 @@ RS.RenderStepped:Connect(function(delta)
 			end
 		end
 	end
-end)
-
-RS.RenderStepped:Connect(function(delta)
-UpdateAllHitbox()
 end)
