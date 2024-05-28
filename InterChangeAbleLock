@@ -35,7 +35,7 @@ uis.InputBegan:Connect(function(key,gpe)
 						if (plr.Character.HumanoidRootPart.Position-mouse.Hit.Position).Magnitude <= range then
 							target = plr.Character
 							Noti("Locked Onto "..plr.Name)
-							task.wait(0.25)
+							break
 						end
 					end
 				end
@@ -67,7 +67,17 @@ rs.RenderStepped:Connect(function(delta)
 					end
 				end
 			end)
-			camera.CFrame = CFrame.new(camera.CFrame.Position,(target.HumanoidRootPart.CFrame.Position + (target.Humanoid.MoveDirection+Vector3.new(0,1,-Offset))))
+			if target:FindFirstChild("Humanoid") then
+				local Hum = target:FindFirstChild("Humanoid")
+				local Sway = math.round(Hum.MoveDirection.X)
+				if Sway >= 0 then
+					camera.CFrame = CFrame.new(camera.CFrame.Position,(target.HumanoidRootPart.CFrame.Position + (target.Humanoid.MoveDirection+Vector3.new(0,0.5,Offset))))
+				elseif Sway <= 0 then
+					camera.CFrame = CFrame.new(camera.CFrame.Position,(target.HumanoidRootPart.CFrame.Position + (target.Humanoid.MoveDirection+Vector3.new(0,0.5,-Offset))))
+				elseif Sway == 0 then
+					camera.CFrame = CFrame.new(camera.CFrame.Position,(target.HumanoidRootPart.CFrame.Position + (target.Humanoid.MoveDirection+Vector3.new(0,0.5,0))))
+				end
+			end
 		end
 	end
 end)
