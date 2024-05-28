@@ -1,9 +1,8 @@
-local TargetingPart = "torso";
 local keybind = "t";
 local enablekey = "y";
-local range = 10;
+local range = 15;
 local NotiEnabled = true
-
+local Offset = 0.4;
 
 local uis = game:GetService("UserInputService")
 local player = game.Players.LocalPlayer
@@ -13,15 +12,6 @@ local enabled = false
 local targeting = false
 local target = nil
 local rs = game:GetService("RunService")
-local TargetingTable = {
-	["head"] = "head";
-	["torso"] = "HumanoidRootPart";
-	["rightarm"] = "Right Arm";
-	["leftarm"] = "Left Arm";
-	["rightleg"] = "Right Leg";
-	["leftleg"] = "Left Leg";
-}
-
 local function Noti(Text)
 	if NotiEnabled == true then
 		local Sound = Instance.new("Sound")
@@ -29,22 +19,23 @@ local function Noti(Text)
 		Sound.Parent = game.Players.LocalPlayer.PlayerGui
 		Sound:Play()
 		game:GetService("StarterGui"):SetCore("SendNotification",{
-			Title = "Wood's Aimlock Notification";
+			Title = "Aimlock Notification";
 			Text = Text;
 		})
 	end
 end
-Noti("Woods Aimlock V0.24 🍆💦")
+Noti("Woods Aimlock V0.32")
 uis.InputBegan:Connect(function(key,gpe)
 	if gpe then return end
 	if key.KeyCode == Enum.KeyCode[string.upper(keybind)] then
 		if target == nil then
-			for instancenumber,model in pairs(game.Workspace:GetDescendants()) do
-				if model:IsA("Model") then
-					if (model.WorldPivot.Position-mouse.Hit.Position).Magnitude <= tonumber(range) then
-						if model:FindFirstChild("HumanoidRootPart") then
-							target = model
-							Noti("Locked Onto "..model.Name)
+			for instancenumber,plr in pairs(game.Players:GetPlayers()) do
+				if plr.Name ~= player.Name then
+					if plr.Character then
+						if (plr.Character.HumanoidRootPart.Position-mouse.Hit.Position).Magnitude <= range then
+							target = plr.Character
+							Noti("Locked Onto "..plr.Name)
+							task.wait(0.25)
 						end
 					end
 				end
@@ -67,7 +58,16 @@ end)
 rs.RenderStepped:Connect(function(delta)
 	if enabled == true then
 		if target ~= nil then
-			camera.CFrame = CFrame.new(camera.CFrame.Position,(target[TargetingTable[string.lower(TargetingPart)]].Position + target:FindFirstChild("Humanoid").MoveDirection))
+			pcall(function()
+				if target:FindFirstChild("Humanoid") then
+					if target:FindFirstChild("Humanoid").Health <= 5 then
+						Noti(target.Name.." Has Died")
+						target = nil
+						task.wait(0.25)
+					end
+				end
+			end)
+			camera.CFrame = CFrame.new(camera.CFrame.Position,(target.HumanoidRootPart.CFrame.Position + (target.Humanoid.MoveDirection+Vector3.new(0,1,-Offset))))
 		end
 	end
 end)
