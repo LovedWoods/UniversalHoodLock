@@ -1,0 +1,73 @@
+local TargetingPart = "torso";
+local keybind = "t";
+local enablekey = "y";
+local range = 10;
+local NotiEnabled = true
+
+
+local uis = game:GetService("UserInputService")
+local player = game.Players.LocalPlayer
+local mouse = player:GetMouse()
+local camera = game.Workspace.Camera
+local enabled = false
+local targeting = false
+local target = nil
+local rs = game:GetService("RunService")
+local TargetingTable = {
+	["head"] = "head";
+	["torso"] = "HumanoidRootPart";
+	["rightarm"] = "Right Arm";
+	["leftarm"] = "Left Arm";
+	["rightleg"] = "Right Leg";
+	["leftleg"] = "Left Leg";
+}
+
+local function Noti(Text)
+	if NotiEnabled == true then
+		local Sound = Instance.new("Sound")
+		Sound.SoundId = "rbxassetid://8486683243"
+		Sound.Parent = game.Players.LocalPlayer.PlayerGui
+		Sound:Play()
+		game:GetService("StarterGui"):SetCore("SendNotification",{
+			Title = "Wood's Aimlock Notification";
+			Text = Text;
+		})
+	end
+end
+Noti("Woods Aimlock V0.24 🍆💦")
+uis.InputBegan:Connect(function(key,gpe)
+	if gpe then return end
+	if key.KeyCode == Enum.KeyCode[string.upper(keybind)] then
+		if target == nil then
+			for instancenumber,model in pairs(game.Workspace:GetDescendants()) do
+				if model:IsA("Model") then
+					if (model.WorldPivot.Position-mouse.Hit.Position).Magnitude <= tonumber(range) then
+						if model:FindFirstChild("HumanoidRootPart") then
+							target = model
+							Noti("Locked Onto "..model.Name)
+						end
+					end
+				end
+			end
+		elseif target ~= nil then
+			Noti("Unlocked From "..target.Name)
+			target = nil
+		end
+	elseif key.KeyCode == Enum.KeyCode[string.upper(enablekey)] then
+		if enabled == true then
+			enabled = false
+			Noti("Disabled Aimlock")
+		elseif enabled == false then
+			enabled = true
+			Noti("Enabled Aimlock")
+		end
+	end
+end)
+
+rs.RenderStepped:Connect(function(delta)
+	if enabled == true then
+		if target ~= nil then
+			camera.CFrame = CFrame.new(camera.CFrame.Position,(target[TargetingTable[string.lower(TargetingPart)]].Position + target:FindFirstChild("Humanoid").MoveDirection))
+		end
+	end
+end)
