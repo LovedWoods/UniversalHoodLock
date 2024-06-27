@@ -55,6 +55,7 @@ uis.InputBegan:Connect(function(key,gpe)
 end)
 
 while true do
+pcall(function()
 	if enabled == true then
 		if target ~= nil then
 			pcall(function()
@@ -80,5 +81,6 @@ while true do
 			end
 		end
 	end
+end)
 task.wait()
 end
