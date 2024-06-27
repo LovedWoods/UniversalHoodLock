@@ -1,8 +1,8 @@
 local keybind = "t";
 local enablekey = "y";
-local range = 15;
+local range = 20;
 local NotiEnabled = true
-local Offset = 0.2
+local Offset = 0.123
 
 local uis = game:GetService("UserInputService")
 local player = game.Players.LocalPlayer
