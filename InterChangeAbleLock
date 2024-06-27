@@ -2,7 +2,7 @@ local keybind = "t";
 local enablekey = "y";
 local range = 15;
 local NotiEnabled = true
-local Offset = tonumber(game.Players.LocalPlayer:GetNetworkPing()*100)*0.2;
+local Offset = 0.2
 
 local uis = game:GetService("UserInputService")
 local player = game.Players.LocalPlayer
@@ -70,10 +70,11 @@ rs.RenderStepped:Connect(function(delta)
 			if target:FindFirstChild("Humanoid") then
 				local Hum = target:FindFirstChild("Humanoid")
 				local Sway = math.round(Hum.MoveDirection.X)
+				local OffSet2 = tonumber(game.Players.LocalPlayer:GetNetworkPing()*100)*Offset;
 				if Sway >= 0 then
-					camera.CFrame = CFrame.new(camera.CFrame.Position,(target.HumanoidRootPart.CFrame.Position + (target.Humanoid.MoveDirection+Vector3.new(0,0.7,Offset))))
+					camera.CFrame = CFrame.new(camera.CFrame.Position,(target.HumanoidRootPart.CFrame.Position + (target.Humanoid.MoveDirection+Vector3.new(0,0.7,OffSet2))))
 				elseif Sway <= 0 then
-					camera.CFrame = CFrame.new(camera.CFrame.Position,(target.HumanoidRootPart.CFrame.Position + (target.Humanoid.MoveDirection+Vector3.new(0,0.7,-Offset))))
+					camera.CFrame = CFrame.new(camera.CFrame.Position,(target.HumanoidRootPart.CFrame.Position + (target.Humanoid.MoveDirection+Vector3.new(0,0.7,-OffSet2))))
 				else
 					camera.CFrame = CFrame.new(camera.CFrame.Position,(target.HumanoidRootPart.CFrame.Position + (target.Humanoid.MoveDirection+Vector3.new(0,0.7,0))))
 				end
