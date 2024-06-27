@@ -11,7 +11,6 @@ local camera = game.Workspace.Camera
 local enabled = false
 local targeting = false
 local target = nil
-local rs = game:GetService("RunService")
 local function Noti(Text)
 	if NotiEnabled == true then
 		local Sound = Instance.new("Sound")
@@ -55,7 +54,7 @@ uis.InputBegan:Connect(function(key,gpe)
 	end
 end)
 
-while true do
+rs.RenderStepped:Connect(function(delta)
 	if enabled == true then
 		if target ~= nil then
 			pcall(function()
@@ -81,5 +80,4 @@ while true do
 			end
 		end
 	end
-task.wait()
-end
+end)
