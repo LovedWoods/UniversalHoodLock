@@ -71,9 +71,9 @@ rs.RenderStepped:Connect(function(delta)
 				local Hum = target:FindFirstChild("Humanoid")
 				local Sway = math.round(Hum.MoveDirection.X)
 				local OffSet2 = tonumber(game.Players.LocalPlayer:GetNetworkPing()*100)*Offset;
-				if Sway >= 0 then
+				if Sway > 0.1 then
 					camera.CFrame = CFrame.new(camera.CFrame.Position,(target.HumanoidRootPart.CFrame.Position + (target.Humanoid.MoveDirection+Vector3.new(0,0.7,OffSet2))))
-				elseif Sway <= 0 then
+				elseif Sway < 0.1 then
 					camera.CFrame = CFrame.new(camera.CFrame.Position,(target.HumanoidRootPart.CFrame.Position + (target.Humanoid.MoveDirection+Vector3.new(0,0.7,-OffSet2))))
 				else
 					camera.CFrame = CFrame.new(camera.CFrame.Position,(target.HumanoidRootPart.CFrame.Position + (target.Humanoid.MoveDirection+Vector3.new(0,0.7,0))))
