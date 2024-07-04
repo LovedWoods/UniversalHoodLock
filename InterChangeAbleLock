@@ -1,8 +1,12 @@
+if game.Players.LocalPlayer:FindFirstChild("WoodsLockLoadedASDASFGJAKLJDLJQWEPOQUIRPOQWUEQWPASDAFGASFASDASDASDADADASDSSADSADSADASDASAGASFDASDASDADADADASDASDASDDASWoodsLockLoadedASDASFGJAKLJDLJQWEPOQUIRPOQWUEQWPASDAFGASFASDASDASDADADASDSSADSADSADASDASAGASFDASDASDADADADASDASDASDDASWoodsLockLoadedASDASFGJAKLJDLJQWEPOQUIRPOQWUEQWPASDAFGASFASDASDASDADADASDSSADSADSADASDASAGASFDASDASDADADADASDASDASDDAS") then return end
+local F = Instance.new("StringValue")
+F.Name = "WoodsLockLoadedASDASFGJAKLJDLJQWEPOQUIRPOQWUEQWPASDAFGASFASDASDASDADADASDSSADSADSADASDASAGASFDASDASDADADADASDASDASDDASWoodsLockLoadedASDASFGJAKLJDLJQWEPOQUIRPOQWUEQWPASDAFGASFASDASDASDADADASDSSADSADSADASDASAGASFDASDASDADADADASDASDASDDASWoodsLockLoadedASDASFGJAKLJDLJQWEPOQUIRPOQWUEQWPASDAFGASFASDASDASDADADASDSSADSADSADASDASAGASFDASDASDADADADASDASDASDDAS"
+F.Parent = game.Players.LocalPlayer
 local keybind = "t";
 local enablekey = "y";
 local range = 20;
 local NotiEnabled = true
-local Offset = 0.123
+local Offset = 0.02
 
 local uis = game:GetService("UserInputService")
 local player = game.Players.LocalPlayer
@@ -23,7 +27,7 @@ local function Noti(Text)
 		})
 	end
 end
-Noti("Woods Aimlock V0.42")
+Noti("Woods Aimlock V0.44")
 uis.InputBegan:Connect(function(key,gpe)
 	if gpe then return end
 	if key.KeyCode == Enum.KeyCode[string.upper(keybind)] then
@@ -70,7 +74,7 @@ pcall(function()
 			if target:FindFirstChild("Humanoid") then
 				local Hum = target:FindFirstChild("Humanoid")
 				local Sway = math.round(Hum.MoveDirection.X)
-				local OffSet2 = tonumber(game.Players.LocalPlayer:GetNetworkPing()*100)*Offset;
+				local OffSet2 = tonumber(game.Players.LocalPlayer:GetNetworkPing()*1000)*Offset;
 				if Sway > 0.1 then
 					camera.CFrame = CFrame.new(camera.CFrame.Position,(target.HumanoidRootPart.CFrame.Position + (target.Humanoid.MoveDirection+Vector3.new(0,0.7,OffSet2))))
 				elseif Sway < 0.1 then
