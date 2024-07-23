@@ -1,24 +1,8 @@
-if game.Players.LocalPlayer:FindFirstChild("WoodsLockLoadedASDASFGJAKLJDLJQWEPOQUIRPOQWUEQWPASDAFGASFASDASDASDADADASDSSADSADSADASDASAGASFDASDASDADADADASDASDASDDASWoodsLockLoadedASDASFGJAKLJDLJQWEPOQUIRPOQWUEQWPASDAFGASFASDASDASDADADASDSSADSADSADASDASAGASFDASDASDADADADASDASDASDDASWoodsLockLoadedASDASFGJAKLJDLJQWEPOQUIRPOQWUEQWPASDAFGASFASDASDASDADADASDSSADSADSADASDASAGASFDASDASDADADADASDASDASDDAS") then return end
-local F = Instance.new("StringValue")
-F.Name = "WoodsLockLoadedASDASFGJAKLJDLJQWEPOQUIRPOQWUEQWPASDAFGASFASDASDASDADADASDSSADSADSADASDASAGASFDASDASDADADADASDASDASDDASWoodsLockLoadedASDASFGJAKLJDLJQWEPOQUIRPOQWUEQWPASDAFGASFASDASDASDADADASDSSADSADSADASDASAGASFDASDASDADADADASDASDASDDASWoodsLockLoadedASDASFGJAKLJDLJQWEPOQUIRPOQWUEQWPASDAFGASFASDASDASDADADASDSSADSADSADASDASAGASFDASDASDADADADASDASDASDDAS"
-F.Parent = game.Players.LocalPlayer
-local keybind = "t";
-local enablekey = "y";
-local range = 20;
 local NotiEnabled = true
-local Offset = 0.005
-
-local uis = game:GetService("UserInputService")
-local player = game.Players.LocalPlayer
-local mouse = player:GetMouse()
-local camera = game.Workspace.Camera
-local enabled = false
-local targeting = false
-local target = nil
 local function Noti(Text)
 	if NotiEnabled == true then
 		local Sound = Instance.new("Sound")
-		Sound.SoundId = "rbxassetid://8486683243"
+		Sound.SoundId = "rbxassetid://5515669992"
 		Sound.Parent = game.Players.LocalPlayer.PlayerGui
 		Sound:Play()
 		game:GetService("StarterGui"):SetCore("SendNotification",{
@@ -27,6 +11,23 @@ local function Noti(Text)
 		})
 	end
 end
+
+if getgenv().LockLoaded == true then
+	Noti("Lock Loaded Already!")
+	return 
+end
+getgenv().LockLoaded = true
+
+local keybind = "t";
+local enablekey = "y";
+local range = 20;
+local Offset = 0.0125
+local uis = game:GetService("UserInputService")
+local player = game.Players.LocalPlayer
+local mouse = player:GetMouse()
+local camera = game.Workspace.Camera
+local enabled = true
+local target = nil
 Noti("Woods Aimlock V0.44")
 uis.InputBegan:Connect(function(key,gpe)
 	if gpe then return end
@@ -38,12 +39,18 @@ uis.InputBegan:Connect(function(key,gpe)
 						if (plr.Character.HumanoidRootPart.Position-mouse.Hit.Position).Magnitude <= range and plr.Character:FindFirstChild("Humanoid").Health >= 2 then
 							target = plr.Character
 							Noti("Locked Onto "..plr.Name)
+							local HL = Instance.new("Highlight",target)
+							HL.OutlineColor = Color3.fromRGB(0,0,0)
+							HL.FillColor = Color3.fromRGB(255,255,255)
 							break
 						end
 					end
 				end
 			end
 		elseif target ~= nil then
+			pcall(function()
+				target:FindFirstChildWhichIsA("Highlight"):Destroy()
+			end)
 			Noti("Unlocked From "..target.Name)
 			target = nil
 		end
@@ -58,33 +65,35 @@ uis.InputBegan:Connect(function(key,gpe)
 	end
 end)
 
-while true do
-pcall(function()
-	if enabled == true then
-		if target ~= nil then
-			pcall(function()
-				if target:FindFirstChild("Humanoid") then
-					if target:FindFirstChild("Humanoid").Health <= 2 then
-						Noti(target.Name.." Has Died")
-						target = nil
-						task.wait(0.25)
+game:GetService("RunService").RenderStepped:Connect(function()
+	pcall(function()
+		if enabled == true then
+			if target ~= nil then
+				pcall(function()
+					if target:FindFirstChild("Humanoid") then
+						if target:FindFirstChild("Humanoid").Health <= 2 then
+							Noti(target.Name.." Has Died")
+							pcall(function()
+								target:FindFirstChildWhichIsA("Highlight"):Destroy()
+							end)
+							target = nil
+							task.wait(0.25)
+						end
 					end
-				end
-			end)
-			if target:FindFirstChild("Humanoid") then
-				local Hum = target:FindFirstChild("Humanoid")
-				local Sway = math.round(Hum.MoveDirection.X)
-				local OffSet2 = tonumber(game.Players.LocalPlayer:GetNetworkPing()*1000)*Offset;
-				if Sway > 0.1 then
-					camera.CFrame = CFrame.new(camera.CFrame.Position,(target.HumanoidRootPart.CFrame.Position + (target.Humanoid.MoveDirection+Vector3.new(0,0.7,OffSet2))))
-				elseif Sway < 0.1 then
-					camera.CFrame = CFrame.new(camera.CFrame.Position,(target.HumanoidRootPart.CFrame.Position + (target.Humanoid.MoveDirection+Vector3.new(0,0.7,-OffSet2))))
-				else
-					camera.CFrame = CFrame.new(camera.CFrame.Position,(target.HumanoidRootPart.CFrame.Position + (target.Humanoid.MoveDirection+Vector3.new(0,0.7,0))))
+				end)
+				if target:FindFirstChild("Humanoid") then
+					local Hum = target:FindFirstChild("Humanoid")
+					local Sway = math.round(Hum.MoveDirection.X)
+					local OffSet2 = tonumber(game.Players.LocalPlayer:GetNetworkPing()*1000)*Offset;
+					if Sway > 0.1 then
+						camera.CFrame = CFrame.new(camera.CFrame.Position,(target.HumanoidRootPart.CFrame.Position + (target.Humanoid.MoveDirection+Vector3.new(0,Offset,OffSet2))))
+					elseif Sway < 0.1 then
+						camera.CFrame = CFrame.new(camera.CFrame.Position,(target.HumanoidRootPart.CFrame.Position + (target.Humanoid.MoveDirection+Vector3.new(0,Offset,-OffSet2))))
+					elseif Sway == 0 then
+						camera.CFrame = CFrame.new(camera.CFrame.Position,(target.HumanoidRootPart.CFrame.Position + (target.Humanoid.MoveDirection+Vector3.new(0,Offset,0))))
+					end
 				end
 			end
 		end
-	end
+	end)
 end)
-task.wait()
-end
